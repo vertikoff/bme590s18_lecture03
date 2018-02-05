@@ -1,6 +1,6 @@
 def main():
     csv_files_in_dir = collect_all_valid_csv_filenames()
-    read_csvs(csv_files_in_dir)
+    read_and_validate_csvs_then_write_json(csv_files_in_dir)
 
 
 def collect_all_valid_csv_filenames():
@@ -15,7 +15,7 @@ def collect_all_valid_csv_filenames():
 
     return all_csvs
 
-def read_csvs(csvs_array):
+def read_and_validate_csvs_then_write_json(csvs_array):
     import csv, sys, os
     TEAM_NAME_INDEX = 4
     EXPECTED_INDEXES = 5
@@ -74,7 +74,7 @@ def remove_file_from_dir_before_creating(filename):
 def swap_csv_for_json_file_extension(filename):
     return(filename.replace('.csv', '.json'))
 
-# CRV open question here - do we want the mlp6.csv file to have a json representation? 
+# CRV open question here - do we want the mlp6.csv file to have a json representation?
 def create_and_write_json_file(filename, contents):
     import json
     remove_file_from_dir_before_creating(filename)
