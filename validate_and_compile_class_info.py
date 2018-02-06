@@ -20,6 +20,7 @@ def read_and_validate_csvs_then_write_json(csvs_array):
     TEAM_NAME_INDEX = 4
     EXPECTED_INDEXES = 5
     num_teams_used_camel_case = 0
+    num_team_names_with_spaces = 0
 
     # CRV remove the everyone.csv file if it already exists in the directory
     remove_file_from_dir_before_creating('everyone.csv')
@@ -37,7 +38,13 @@ def read_and_validate_csvs_then_write_json(csvs_array):
                 if(len(row) == EXPECTED_INDEXES and row[0][0] != '#'):
                     # CRV add this row to the everyone csv
                     everyone_writer.writerow(row)
-                    check_no_spaces(row[TEAM_NAME_INDEX])
+
+                    #CRV check if team name has space in it
+                    does_team_name_have_space = check_no_spaces(row[TEAM_NAME_INDEX])
+                    if(does_team_name_have_space):
+                        num_team_names_with_spaces += 1
+
+                    #CRV check if team name is camel case
                     is_team_name_camel_case = is_camel_case(row[TEAM_NAME_INDEX])
                     if(is_team_name_camel_case):
                         num_teams_used_camel_case += 1
@@ -48,13 +55,16 @@ def read_and_validate_csvs_then_write_json(csvs_array):
 
 
     everyone_file.close()
+    sys.stdout.write('team names with spaces: ' + str(num_team_names_with_spaces))
+    # CRV added print for readability puroses (adding new line char to sys.stdout.write through error)
+    print("")
     sys.stdout.write('teams that used camel case: ' + str(num_teams_used_camel_case))
     # CRV added print for readability puroses (adding new line char to sys.stdout.write through error)
     print("")
 
 
 def check_no_spaces(team_name):
-    has_space = team_name.isspace()
+    return(team_name.isspace())
 
 
 # CRV open question here - do we want to allow acronyms or numbers in our camel case validator?
